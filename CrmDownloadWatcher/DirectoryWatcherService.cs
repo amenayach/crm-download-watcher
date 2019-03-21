@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Security;
 using System.Security.Permissions;
 
 namespace CrmDownloadWatcher
 {
-    public class DirectoryWatcherService
+    public partial class DirectoryWatcherService
     {
         private FileSystemWatcher watcher;
 
@@ -25,8 +24,7 @@ namespace CrmDownloadWatcher
         private void Run()
         {
             Logger.LogInfo("Starting ...");
-
-            var folderToWatch = File.ReadAllLines($@"{Directory.GetCurrentDirectory()}\appsettings.txt").FirstOrDefault();
+            string folderToWatch = Config.GetConfigFolder();
 
             if (string.IsNullOrWhiteSpace(folderToWatch) || !Directory.Exists(folderToWatch))
             {
