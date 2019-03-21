@@ -4,25 +4,29 @@
     using System.IO;
     using System.Linq;
 
-    public partial class DirectoryWatcherService
+    /// <summary>
+    /// Retrieves the folder path to watch from appsettings.txt
+    /// </summary>
+    public class Config
     {
-        public class Config
+        /// <summary>
+        /// Gets the configuration folder.
+        /// </summary>
+        /// <returns></returns>
+        public static string GetConfigFolder()
         {
-            public static string GetConfigFolder()
+            var filename = $@"{Directory.GetCurrentDirectory()}\appsettings.txt";
+
+            if (!File.Exists(filename))
             {
-                var filename = $@"{Directory.GetCurrentDirectory()}\appsettings.txt";
+                var defaultDownloadFolder = $@"C:\Users\{Environment.UserName}\Downloads";
 
-                if (!File.Exists(filename))
-                {
-                    var defaultDownloadFolder = $@"C:\Users\{Environment.UserName}\Downloads";
+                File.WriteAllText(filename, defaultDownloadFolder);
 
-                    File.WriteAllText(filename, defaultDownloadFolder);
-
-                    return defaultDownloadFolder;
-                }
-
-                return File.ReadAllLines(filename).FirstOrDefault();
+                return defaultDownloadFolder;
             }
+
+            return File.ReadAllLines(filename).FirstOrDefault();
         }
     }
 }

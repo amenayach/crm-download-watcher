@@ -1,6 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -8,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace CrmDownloadWatcher
@@ -24,27 +23,15 @@ namespace CrmDownloadWatcher
             Size = new System.Drawing.Size(1, 1);
             Visible = false;
 
-            AddAppToWinStartup();
+            WindowsStartupManager.AddAppToWinStartup();
 
             var watchService = new DirectoryWatcherService();
             watchService.Start();
 
             FormClosing += (object sender, FormClosingEventArgs e) =>
             {
-                watchService.Stop();    
+                watchService.Stop();
             };
-        }
-
-        public static void AddAppToWinStartup()
-        {
-            try
-            {
-                Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true).SetValue(Application.ProductName, Application.ExecutablePath);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex);
-            }
         }
     }
 }
